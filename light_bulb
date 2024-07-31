@@ -1,0 +1,223 @@
+[
+    {
+        "id": "75fea2e1.fdbd5c",
+        "type": "tab",
+        "label": "Light Bulb",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "bed40401.3794b8",
+        "type": "inject",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ON",
+        "payloadType": "str",
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "72f61ebb.7ecff",
+                "3f57a787.3023a8",
+                "e5668d51.a8bed"
+            ]
+        ]
+    },
+    {
+        "id": "8a5420dc.5a014",
+        "type": "inject",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "x": 110,
+        "y": 180,
+        "wires": [
+            [
+                "e5668d51.a8bed",
+                "3f57a787.3023a8"
+            ]
+        ]
+    },
+    {
+        "id": "8e967abb.6b9638",
+        "type": "function",
+        "z": "75fea2e1.fdbd5c",
+        "name": "Timer to OFF",
+        "func": "msg.payload = \"OFF\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 630,
+        "y": 220,
+        "wires": [
+            [
+                "3f57a787.3023a8",
+                "e5668d51.a8bed"
+            ]
+        ]
+    },
+    {
+        "id": "72f61ebb.7ecff",
+        "type": "delay",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "15",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "outputs": 1,
+        "x": 340,
+        "y": 220,
+        "wires": [
+            [
+                "8e967abb.6b9638"
+            ]
+        ]
+    },
+    {
+        "id": "3f57a787.3023a8",
+        "type": "debug",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 350,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "e5668d51.a8bed",
+        "type": "mqtt out",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "topic": "cmnd/sonoff01/POWER",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4d6606e5d2c874c8",
+        "x": 590,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "8b33bfb3.f14b",
+        "type": "mqtt out",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "topic": "cmnd/sonoff0919/POWER",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4d6606e5d2c874c8",
+        "x": 600,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ee979f2.ea68a6",
+        "type": "inject",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "x": 130,
+        "y": 440,
+        "wires": [
+            [
+                "9c14370f.e3c578",
+                "7d91b66d.7e3508"
+            ]
+        ]
+    },
+    {
+        "id": "9c14370f.e3c578",
+        "type": "mqtt out",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "topic": "cmnd/sonoff0919/POWER",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4d6606e5d2c874c8",
+        "x": 460,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "7d91b66d.7e3508",
+        "type": "debug",
+        "z": "75fea2e1.fdbd5c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 420,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "4d6606e5d2c874c8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "174.138.28.115",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
