@@ -1,0 +1,597 @@
+[
+    {
+        "id": "fc8e2a0f.e10818",
+        "type": "tab",
+        "label": "APCC IoT",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "7f9ef0dc.3674b",
+        "type": "mqtt in",
+        "z": "fc8e2a0f.e10818",
+        "name": "Bosch Sensor",
+        "topic": "xdk10",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "4d6606e5d2c874c8",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 110,
+        "y": 60,
+        "wires": [
+            [
+                "6db6d7be.787bb8",
+                "34083e4d.0c1802",
+                "e0cc0373.04c0a",
+                "eac78160.1756d"
+            ]
+        ]
+    },
+    {
+        "id": "6db6d7be.787bb8",
+        "type": "function",
+        "z": "fc8e2a0f.e10818",
+        "name": "Parsing Humidity",
+        "func": "msg.payload = msg.payload.substring(24,msg.payload.length - 35);\n\nvar res = parseFloat (msg.payload)\nmsg.payload = res\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 333,
+        "y": 178,
+        "wires": [
+            [
+                "e3b737fe.ad8df8",
+                "e6a89248.00ca4",
+                "d784aff.853d35"
+            ]
+        ]
+    },
+    {
+        "id": "34083e4d.0c1802",
+        "type": "function",
+        "z": "fc8e2a0f.e10818",
+        "name": "Parsing Temperature",
+        "func": "msg.payload = msg.payload.substring(44,msg.payload.length - 15);\n\nvar res = parseFloat (msg.payload)\nmsg.payload = res\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 345,
+        "y": 61,
+        "wires": [
+            [
+                "fc339851.f36ac8",
+                "e6a89248.00ca4",
+                "789c4e5f.44fd3",
+                "9f1966a5b220bf7f"
+            ]
+        ]
+    },
+    {
+        "id": "e0cc0373.04c0a",
+        "type": "function",
+        "z": "fc8e2a0f.e10818",
+        "name": "Parsing Light",
+        "func": "msg.payload = msg.payload.substring(58,msg.payload.length - 1);\n\nvar res = parseFloat (msg.payload)\nmsg.payload = res\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 316,
+        "y": 278,
+        "wires": [
+            [
+                "26ec7e73.aacfc2",
+                "e6a89248.00ca4",
+                "e58be5f1.f9ae48",
+                "1813564f.b9269a",
+                "e3b66064.2437e"
+            ]
+        ]
+    },
+    {
+        "id": "e6a89248.00ca4",
+        "type": "function",
+        "z": "fc8e2a0f.e10818",
+        "name": "Timestamp",
+        "func": "var readCurrent = new Date().getTime();\nmsg.payload = readCurrent;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 587.0000305175781,
+        "y": 398,
+        "wires": [
+            [
+                "62631b2f.5f06ec"
+            ]
+        ]
+    },
+    {
+        "id": "e58be5f1.f9ae48",
+        "type": "switch",
+        "z": "fc8e2a0f.e10818",
+        "name": "Check brightness",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "1000",
+                "vt": "str"
+            },
+            {
+                "t": "lt",
+                "v": "10",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 153,
+        "y": 447,
+        "wires": [
+            [
+                "5d6fce1d.5fbc9"
+            ],
+            [
+                "aad6765.8774688",
+                "dccdb552.764848"
+            ]
+        ]
+    },
+    {
+        "id": "dccdb552.764848",
+        "type": "function",
+        "z": "fc8e2a0f.e10818",
+        "name": "Low light",
+        "func": "msg.payload = \"BOSCH WARNING: LOW LIGHT!!\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 187.07986450195312,
+        "y": 535.2986450195312,
+        "wires": [
+            [
+                "42d5f573.9ea71c"
+            ]
+        ]
+    },
+    {
+        "id": "e3b66064.2437e",
+        "type": "debug",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 139.81817626953125,
+        "y": 319.3636474609375,
+        "wires": []
+    },
+    {
+        "id": "42d5f573.9ea71c",
+        "type": "debug",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 313,
+        "y": 630,
+        "wires": []
+    },
+    {
+        "id": "eac78160.1756d",
+        "type": "debug",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 112.06944274902344,
+        "y": 204.27779388427734,
+        "wires": []
+    },
+    {
+        "id": "62631b2f.5f06ec",
+        "type": "function",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "func": "// Create a Date object from the payload\nvar date = new Date(msg.payload);\n\n// Change the payload to be a formatted Date string\nmsg.payload = date.toString();\n\n// Return the message so it can be sent on\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 850,
+        "y": 380,
+        "wires": [
+            [
+                "d0a728d4.775db"
+            ]
+        ]
+    },
+    {
+        "id": "d0a728d4.775db",
+        "type": "debug",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 900,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "8c45f298.76b77",
+        "type": "ui_text",
+        "z": "fc8e2a0f.e10818",
+        "group": "c3eb0fe0.b3ae5",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Last Updated: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "x": 590,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "212c0e98.618a22",
+        "type": "ui_text",
+        "z": "fc8e2a0f.e10818",
+        "group": "d9dcc16a.eff63",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Last Updated: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "x": 588,
+        "y": 539,
+        "wires": []
+    },
+    {
+        "id": "abdee20d.c2b29",
+        "type": "ui_text",
+        "z": "fc8e2a0f.e10818",
+        "group": "de9e9789.7409b8",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Last Updated: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "x": 587,
+        "y": 577,
+        "wires": []
+    },
+    {
+        "id": "fc339851.f36ac8",
+        "type": "ui_gauge",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "group": "c3eb0fe0.b3ae5",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "Celcius",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00ff00",
+            "#ffff00",
+            "#ff0000"
+        ],
+        "seg1": "30",
+        "seg2": "35",
+        "x": 590,
+        "y": 61,
+        "wires": []
+    },
+    {
+        "id": "e3b737fe.ad8df8",
+        "type": "ui_gauge",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "group": "d9dcc16a.eff63",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "Percentage",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ffff00",
+            "#00ff00",
+            "#ff0000"
+        ],
+        "seg1": "30",
+        "seg2": "80",
+        "x": 580,
+        "y": 179,
+        "wires": []
+    },
+    {
+        "id": "26ec7e73.aacfc2",
+        "type": "ui_gauge",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "group": "de9e9789.7409b8",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "Light Intensity",
+        "label": "lux",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2000",
+        "colors": [
+            "#ff0000",
+            "#00ff00",
+            "#ff0000"
+        ],
+        "seg1": "10",
+        "seg2": "1000",
+        "x": 602,
+        "y": 277,
+        "wires": []
+    },
+    {
+        "id": "789c4e5f.44fd3",
+        "type": "ui_chart",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "group": "c3eb0fe0.b3ae5",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "40",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 2,
+        "x": 571.017333984375,
+        "y": 101.01040649414062,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d784aff.853d35",
+        "type": "ui_chart",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "group": "d9dcc16a.eff63",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 2,
+        "x": 572.017333984375,
+        "y": 217.0104217529297,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "1813564f.b9269a",
+        "type": "ui_chart",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "group": "de9e9789.7409b8",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "2000",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 2,
+        "x": 573,
+        "y": 321,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5d6fce1d.5fbc9",
+        "type": "ui_toast",
+        "z": "fc8e2a0f.e10818",
+        "position": "bottom right",
+        "displayTime": "3",
+        "highlight": "Green",
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "topic": "Wow, it is very bright here.. ",
+        "name": "Bright",
+        "x": 363,
+        "y": 425,
+        "wires": []
+    },
+    {
+        "id": "aad6765.8774688",
+        "type": "ui_toast",
+        "z": "fc8e2a0f.e10818",
+        "position": "bottom right",
+        "displayTime": "3",
+        "highlight": "Red",
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "topic": "Hey, it is dark here.. ",
+        "name": "Dark",
+        "x": 364,
+        "y": 470,
+        "wires": []
+    },
+    {
+        "id": "9f1966a5b220bf7f",
+        "type": "file",
+        "z": "fc8e2a0f.e10818",
+        "name": "",
+        "filename": "file_hafizal.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 720,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4d6606e5d2c874c8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "174.138.28.115",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "c3eb0fe0.b3ae5",
+        "type": "ui_group",
+        "name": "Temp",
+        "tab": "ccdb6797.658a58",
+        "order": 2,
+        "disp": false,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "d9dcc16a.eff63",
+        "type": "ui_group",
+        "name": "Humidity",
+        "tab": "ccdb6797.658a58",
+        "order": 3,
+        "disp": false,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "de9e9789.7409b8",
+        "type": "ui_group",
+        "name": "Light",
+        "tab": "ccdb6797.658a58",
+        "order": 1,
+        "disp": false,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "ccdb6797.658a58",
+        "type": "ui_tab",
+        "name": "Bosch XDK",
+        "icon": "dashboard",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    }
+]
